@@ -60,7 +60,7 @@ class User(AbstractBaseUser, UUIDModel, PermissionsMixin, BaseModel):
         ordering = ('-date_joined',)
 
     def __str__(self):
-        return self.username
+        return self.email
 
     def get_full_name(self):
         """
@@ -73,5 +73,5 @@ class User(AbstractBaseUser, UUIDModel, PermissionsMixin, BaseModel):
         "Returns the short name for the user."
         return self.first_name.strip()
 
-    def clean(self):
-        self.username = self.username.lower()
+    # def clean(self):
+    #     self.username = self.username.lower()
