@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'users',
 ]
 
+INSTALLED_APPS += ("djcelery_email",)
+
 AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
@@ -122,7 +124,8 @@ STATIC_URL = '/static/'
 APP_NAME = "Standard Django"
 
 # ---------------- Email Setting ----------------
-BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587

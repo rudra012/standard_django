@@ -21,6 +21,6 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    url(r'front', include('front_web.urls')),
+    url(r'front/', include('front_web.urls')),
     url(r'front-ajax/', include('front_web.urls')),
 ]
