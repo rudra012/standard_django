@@ -7,3 +7,5 @@ django-celery-email==1.1.5
 kombu==4.0.2
 pytz==2017.2
 vine==1.1.3
+PyJWT
+django-rest-swagger

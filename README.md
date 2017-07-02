@@ -48,3 +48,12 @@ For live server celery should be daemon process:
 http://docs.celeryproject.org/en/latest/userguide/daemonizing.html#daemonizing
 
 https://github.com/celery/celery/tree/master/extra/supervisord
+
+
+# Rest Framework integration
+
+* User registration
+* Login API
+* Logout API
+
+# Swagger integration API doc integration 

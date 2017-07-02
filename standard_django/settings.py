@@ -43,6 +43,14 @@ INSTALLED_APPS = [
 
 INSTALLED_APPS += ("djcelery_email",)
 
+# For Rest API
+# http://www.django-rest-framework.org/
+INSTALLED_APPS += ("rest_framework", "rest_framework.authtoken",)
+
+# For rest documentations
+# https://github.com/marcgibbons/django-rest-swagger
+INSTALLED_APPS += ("rest_framework_swagger",)
+
 AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
