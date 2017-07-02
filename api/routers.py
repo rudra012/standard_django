@@ -16,7 +16,6 @@ from api.users import user_api
 
 api_router = routers.DefaultRouter(trailing_slash=False)
 
-api_router.register(r'me', user_api.CurrentUserViewSet, base_name='api_me')
 api_router.register(r'users', user_api.UserViewSet, base_name='api_users')
 
 # urlpatterns = api_router.urls

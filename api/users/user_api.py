@@ -1,32 +1,18 @@
-from django.contrib.auth import logout
+from django.contrib.auth import login, logout
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import list_route
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.viewsets import GenericViewSet
 
 from base import response
 from users.models import User
 from . import serializers
 from .serializers import UserSerializer
 
-class CurrentUserViewSet(viewsets.ViewSet):
-    filter_backends = ()
 
-    # @list_route(methods=['POST', 'PATCH', 'PUT'])
-    # def update(self, request):
-    #     serializer = serializers.UserSerializer(data=self.request.data, instance=request.user, partial=True)
-    #     serializer.is_valid(raise_exception=True)
-    #     updated_user = serializer.save()
-    #     return response.Ok(serializers.UserSerializer(updated_user, context={'request': request}).data)
-
-    def list(self, *args, **kwargs):
-        return response.Ok(serializers.UserSerializer(self.request.user, context={'request': self.request}).data)
-
-
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
     For get request return response will be all users details 
     """
@@ -70,10 +56,8 @@ class UserViewSet(viewsets.ModelViewSet):
         """
         serializer = serializers.UserLoginSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
-        # print(email, password)
-        # print(serializer.validated_data)
         user_obj = serializer.validated_data.get("user")
-        user = serializers.UserSerializer(user_obj)
+        user = serializers.UserSerializer(user_obj, context={'request': self.request})
         response_json = {'user': user.data}
         user_token = ""
         try:
@@ -84,20 +68,26 @@ class UserViewSet(viewsets.ModelViewSet):
             user_token = Token.objects.create(user=user_obj).key
 
         response_json['user'].update({"token": user_token})
-
+        login(request, user_obj)
         return Response(response_json)
 
     @list_route(methods=['get'], permission_classes=(IsAuthenticated,))
-    def logout(self, request, pk=None):
+    def me(self, request):
+        return response.Ok(serializers.UserSerializer(self.request.user, context={'request': self.request}).data)
+
+    @list_route(methods=['get'], permission_classes=(IsAuthenticated,))
+    def logout(self, request):
         """
         Logout based on the token in the header for logged in user.
         """
-        print(request.user.is_authenticated())
         if request.user and request.user.is_authenticated():
             if request.user.device_id:
                 request.user.device_id = None
                 request.user.save()
+
+            Token.objects.filter(user=request.user).delete()
             logout(request)
+
             return Response({'message': 'Successfully Logged out'}, status=status.HTTP_200_OK)
         else:
             return Response(status=401)
