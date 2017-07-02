@@ -25,6 +25,21 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'email')
 
 
+class ChangePasswordSerializer(serializers.Serializer):
+    password = serializers.CharField(required=True)
+    confirm_password = serializers.CharField(required=True)
+
+    class Meta:
+        fields = ('password', 'confirm_password')
+
+    def validate(self, attrs):
+        request = self.context.get('request')
+        user = authenticate(email=request.user.email, password=attrs.get("password"))
+        if not user:
+            raise NotFound('Old password incorrect!')
+        return attrs
+
+
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
     password = serializers.CharField(required=True)

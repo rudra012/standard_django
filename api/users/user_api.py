@@ -1,5 +1,5 @@
 from django.contrib.auth import login, logout
-from rest_framework import status
+from rest_framework import status, mixins
 from rest_framework import viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import list_route
@@ -9,15 +9,20 @@ from rest_framework.response import Response
 from base import response
 from users.models import User
 from . import serializers
-from .serializers import UserSerializer
 
 
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
+class UserViewSet \
+            (
+            # mixins.RetrieveModelMixin,
+            mixins.ListModelMixin,
+            viewsets.GenericViewSet,
+            # mixins.UpdateModelMixin,
+        ):
     """
     For get request return response will be all users details 
     """
     queryset = User.objects.filter(is_active=True)
-    serializer_class = UserSerializer
+    serializer_class = serializers.UserSerializer
 
     @list_route(methods=['post'])
     def register(self, request):
@@ -74,6 +79,15 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     @list_route(methods=['get'], permission_classes=(IsAuthenticated,))
     def me(self, request):
         return response.Ok(serializers.UserSerializer(self.request.user, context={'request': self.request}).data)
+
+    @list_route(methods=['post'], permission_classes=(IsAuthenticated,))
+    def set_password(self, request):
+        user = request.user
+        serializer = serializers.ChangePasswordSerializer(data=request.data, context={'request': self.request})
+        serializer.is_valid(raise_exception=True)
+        user.set_password(serializer.data.get('password'))
+        user.save()
+        return Response({'status': 'password set'})
 
     @list_route(methods=['get'], permission_classes=(IsAuthenticated,))
     def logout(self, request):
