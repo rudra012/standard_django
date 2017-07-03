@@ -1,11 +1,15 @@
+from django.conf import settings
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from base.model_choices import DEVICE_TYPE
 from base.models import UUIDModel, BaseModel
+from base.utils.utility import email_send
 
 
 class UserManager(BaseUserManager):
@@ -73,5 +77,20 @@ class User(AbstractBaseUser, UUIDModel, PermissionsMixin, BaseModel):
         "Returns the short name for the user."
         return self.first_name.strip()
 
-    # def clean(self):
-    #     self.username = self.username.lower()
+        # def clean(self):
+        #     self.username = self.username.lower()
+
+
+@receiver(post_save, sender=User)
+def create_user_signal(sender, instance, **kwargs):
+    # print("post_save: sender, instance, created, **kwargs")
+    # print(sender, instance, kwargs)
+    if kwargs.get('created', False):
+        # Send verification mail on user creation
+        print("created")
+        subject = "{app_name} - Account Verification Mail".format(app_name=settings.APP_NAME)
+        to = [instance.email]
+        # context = {
+        # }
+        # email_message = get_template('email_templates/test.html').render(Context(context))
+        email_send(subject, "Account Verification Mail", to)
