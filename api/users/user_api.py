@@ -1,12 +1,12 @@
 from django.contrib.auth import login, logout
 from rest_framework import status, mixins
 from rest_framework import viewsets
-from rest_framework.authtoken.models import Token
 from rest_framework.decorators import list_route
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from base import response
+from base.services import get_user_token, delete_user_token, get_user_updated_token
 from users.models import User
 from . import serializers
 
@@ -37,13 +37,7 @@ class UserViewSet \
 
         user = serializers.UserSerializer(user_obj)
         response_json = {'user': user.data}
-        user_token = ""
-        try:
-            user_token = Token.objects.get(user=user_obj).key
-        except:
-            pass
-        if not user_token:
-            user_token = Token.objects.create(user=user_obj).key
+        user_token = get_user_token(user_obj)
 
         response_json['user'].update({"token": user_token})
 
@@ -64,13 +58,7 @@ class UserViewSet \
         user_obj = serializer.validated_data.get("user")
         user = serializers.UserSerializer(user_obj, context={'request': self.request})
         response_json = {'user': user.data}
-        user_token = ""
-        try:
-            user_token = Token.objects.get(user=user_obj).key
-        except:
-            pass
-        if not user_token:
-            user_token = Token.objects.create(user=user_obj).key
+        user_token = get_user_updated_token(user_obj)
 
         response_json['user'].update({"token": user_token})
         login(request, user_obj)
@@ -99,9 +87,14 @@ class UserViewSet \
                 request.user.device_id = None
                 request.user.save()
 
-            Token.objects.filter(user=request.user).delete()
+            # To remove token login
+            delete_user_token(request.user)
+            # To flush session login
             logout(request)
 
-            return Response({'message': 'Successfully Logged out'}, status=status.HTTP_200_OK)
+            return Response(
+                {'message': 'Successfully Logged out'},
+                status=status.HTTP_200_OK
+            )
         else:
             return Response(status=401)
