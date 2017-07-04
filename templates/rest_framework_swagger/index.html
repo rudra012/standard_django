@@ -1,0 +1,37 @@
+{% extends "rest_framework_swagger/base.html" %}
+
+{% block extra_styles %}
+<style>
+    .swagger-section #header{
+        background-color: gold;
+        font-size: 17px;
+    }
+</style>
+{% endblock extra_styles %}
+
+{% block extra_scripts %}
+<script type="text/javascript">
+  $(function () {
+    var ApiVersionAuthorization = function () {};
+    ApiVersionAuthorization.prototype.apply = function (obj) {
+      obj.headers['Accept'] += '; version=1.0';
+      return true;
+    };
+    swaggerUi.api.clientAuthorizations.add(
+        'api_version',
+        new ApiVersionAuthorization()
+    );
+  });
+</script>
+
+{% endblock extra_scripts %}
+
+{# block user_context_message #}
+{# endblock user_context_message #}
+
+{% block extra_nav %}
+Standard APIs
+{% endblock extra_nav %}
+
+{# block logo #}
+{# endblock logo #}

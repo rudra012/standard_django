@@ -57,3 +57,6 @@ https://github.com/celery/celery/tree/master/extra/supervisord
 * Logout API
 
 # Swagger integration API doc integration 
+https://django-rest-swagger.readthedocs.io/en/latest/
+
+# Post save Signal added to send mail on user registration

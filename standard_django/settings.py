@@ -68,7 +68,7 @@ ROOT_URLCONF = 'standard_django.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -167,4 +167,15 @@ REST_FRAMEWORK = {
     ),
     # To enable pagination
     "PAGE_SIZE": 10,
+}
+
+SWAGGER_SETTINGS = {
+    'SHOW_REQUEST_HEADERS': True,
+    'SECURITY_DEFINITIONS': {
+        'basic': {
+            'type': 'basic',
+            # 'type': 'apiKey',
+            # 'type': 'oauth2',
+        }
+    },
 }
