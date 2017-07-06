@@ -179,3 +179,8 @@ SWAGGER_SETTINGS = {
         }
     },
 }
+
+# ANGULAR SETTING
+ANGULAR_URL = '/ng/'
+
+ANGULAR_ROOT = os.path.join(BASE_DIR, 'ngApp/')

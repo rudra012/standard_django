@@ -60,3 +60,20 @@ https://github.com/celery/celery/tree/master/extra/supervisord
 https://django-rest-swagger.readthedocs.io/en/latest/
 
 # Post save Signal added to send mail on user registration
+
+# Angular2 Sample
+* https://4sw.in/blog/2016/django-angular2-tutorial/
+mkdir ngApp
+
+cd ngApp
+
+git clone https://github.com/angular/quickstart .
+
+rm -rf .git/ .github/
+
+mv index.html /path/to/django/app/templates/index.html
+
+mv styles.css /path/to/django/app/static/css/styles.css
+
+npm install
+
