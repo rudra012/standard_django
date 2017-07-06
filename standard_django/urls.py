@@ -31,6 +31,9 @@ urlpatterns += [
     url(r'front/', include('front_web.urls')),
     url(r'front-ajax/', include('front_web.urls')),
 
+    url(r'react001/', include('react001.urls')),
+    url(r'react001-ajax/', include('react001.urls')),
+
     # Rest API
     url(r'^api/', include(api_router.urls)),
 
