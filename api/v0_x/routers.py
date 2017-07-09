@@ -12,7 +12,7 @@ For base name use:
 
 from rest_framework import routers
 
-from api.users import user_api
+from .users import user_api
 
 api_router = routers.DefaultRouter(trailing_slash=False)
 

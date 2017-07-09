@@ -19,7 +19,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework_swagger.views import get_swagger_view
 
-from api.routers import api_router
+from api.v0_x.routers import api_router as api_router_0x
 
 schema_view = get_swagger_view(title='Standard Django API')
 
@@ -35,7 +35,7 @@ urlpatterns += [
     # url(r'react001-ajax/', include('react001.urls_ajax')),
 
     # Rest API
-    url(r'^api/', include(api_router.urls)),
+    url(r'^v0.1-dev/', include(api_router_0x.urls)),
 
 ]
 
