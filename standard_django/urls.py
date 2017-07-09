@@ -29,10 +29,10 @@ urlpatterns = [
 
 urlpatterns += [
     url(r'front/', include('front_web.urls')),
-    url(r'front-ajax/', include('front_web.urls')),
+    # url(r'front-ajax/', include('front_web.urls_ajax')),
 
     url(r'react001/', include('react001.urls')),
-    url(r'react001-ajax/', include('react001.urls')),
+    # url(r'react001-ajax/', include('react001.urls_ajax')),
 
     # Rest API
     url(r'^api/', include(api_router.urls)),

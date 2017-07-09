@@ -7,30 +7,53 @@
     <script src="https://unpkg.com/react-dom@latest/dist/react-dom.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
 </head>
+
 <body>
+
 <div id="root"></div>
+<div id="greet"></div>
 
 <script type="text/babel">
 
-      function formatName(user) {
+    function formatName(user) {
         return user.firstName + ' ' + user.lastName;
-      }
+    }
 
-      const user = {
-        firstName: 'Harper',
-        lastName: 'Perez'
-      };
+    const user = {
+        firstName: 'Shailesh',
+        lastName: 'Rudra'
+    };
 
-      const element = (
+    const element = (
         <h1>
           Hello, {formatName(user)}!
         </h1>
-      );
+    );
 
-      ReactDOM.render(
+    ReactDOM.render(
         element,
         document.getElementById('root')
-      );
+    );
+
+    function GetUserName() {
+        if ('{{request.user.id}}' != 'None') {
+            return '{{request.user.first_name}}'
+        }
+        else {
+            return 'Guest'
+        }
+    }
+
+    const user_greeting = (
+        <h1>
+          Hello, {GetUserName()}!
+        </h1>
+    );
+
+    ReactDOM.render(
+        user_greeting,
+        document.getElementById('greet')
+    );
 
 </script>
 </body>
