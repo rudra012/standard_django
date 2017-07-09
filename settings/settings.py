@@ -37,8 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # My apps
-    # 'base',
-    'users',
+    'applications.users',
 ]
 
 INSTALLED_APPS += ("djcelery_email",)
@@ -63,7 +62,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'standard_django.urls'
+ROOT_URLCONF = 'applications.urls'
+
+WSGI_APPLICATION = 'wsgi.application'
 
 TEMPLATES = [
     {
@@ -81,7 +82,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'standard_django.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases

@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.exceptions import NotFound
 
-from users.models import User
+from applications.users.models import User
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):

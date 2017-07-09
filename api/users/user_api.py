@@ -5,9 +5,9 @@ from rest_framework.decorators import list_route
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from applications.users.models import User
 from base import response
 from base.services import get_user_token, delete_user_token, get_user_updated_token
-from users.models import User
 from . import serializers
 
 
