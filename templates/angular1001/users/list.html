@@ -1,0 +1,153 @@
+
+<div class="container-fluid">
+    <header class="section-header layout-row layout-align-center-center">
+        <h1 class="heading"> {{ currentState.display }}</h1>
+        <div class="view-mode btn-group m-left-12">
+            <a href="#" class="btn btn-default btn-sm active">Table</a>
+            <!--<a href="#deals/grid" class="btn btn-default btn-sm">Board</a>-->
+        </div>
+        <span class="flex"></span>
+        <div class="right-header-content layout-row">
+            <form class="header-search">
+                <div class="has-feedback">
+                    <input class="form-control input-lg" placeholder="Search for a user" ng-model="search" />
+                    <span class="form-control-feedback">
+                        <i class="fa fa-search"></i>
+                    </span>
+                </div>
+            </form>
+            <button type="button" class="btn btn-primary btn-lg m-left-12" data-toggle="modal" data-target="#myModal">Add User</button>
+        </div>
+    </header>
+    <div class="deals-view">
+        <div class="row layout-row">
+            <!--<div class="col-md-2" style="width: 205px;">-->
+                <!--<div class="form-group form-group-lg">-->
+                    <!--<label>View</label>-->
+                    <!--<select class="select-single form-control input-lg">-->
+                        <!--<optgroup label="STANDARD VIEW">-->
+                            <!--<option>All deals</<option>-->
+                            <!--<option>My deals</<option>-->
+                            <!--<option>My won deals this month</<option>-->
+                            <!--<option>New deals this month</<option>-->
+                        <!--</optgroup>-->
+                    <!--</select>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="col-md-12 flex">
+                <div class="table-responsive" scroll>
+                    <table class="table table-hover table-bordered" >
+                        <colgroup>
+                            <col width="65px">
+                            <col>
+                            <col width="275px">
+                            <col>
+                            <col width="220px">
+                            <col width="150px">
+                            <col width="300px">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <!--<th class="text-center">-->
+                                    <!--<label class="checkbox-set">-->
+                                        <!--<input type="checkbox" class="has-value">-->
+                                        <!--<span></span>-->
+                                    <!--</label>-->
+                                <!--</th>-->
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email</th>
+                                <th>Country Code</th>
+                                <th class="">Contact Number</th>
+                                <th class="text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            <tr ng-repeat="user in usersData | filter:search as filtered_result" ng-class="(user.new)?'wiggle':''">
+                                <!--<td class="text-center">-->
+                                    <!--<label class="checkbox-set">-->
+                                        <!--<input type="checkbox" class="has-value">-->
+                                        <!--<span></span>-->
+                                    <!--</label>-->
+                                <!--</td>-->
+                                <td > <a href="">{{ (user.first_name)?user.first_name:'-' }}</a></td>
+                                <td >{{ (user.last_name)?user.last_name:'-' }}</td>
+                                <td >{{ (user.email)?user.email:'-' }}</td>
+                                <td >{{ (user.country_code)?user.country_code:'-' }}</td>
+                                <td  class="">{{ (user.contact_number)?user.contact_number:'-' }}</td>
+                                <td  class="text-right">
+                                    <button ng-click="editClicked(user)" data-toggle="modal" data-target="#myModal" class="btn btn-default"><span class="fa fa-pencil"></span></button>
+                                    <button ng-click="deletUser(user,$index)" class="btn btn-default"><span class="fa fa-trash"></span></button>
+
+                                </td>
+                            </tr>
+
+                            <!--<tr ng-if="loadMore">-->
+                                <!--<td colspan="6">-->
+                                    <!--<center>Loading...</center>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+
+                        </tbody>
+
+                        <!--<tfoot ng-if="usersData.length==0" colspan="6">-->
+                                <!--<center>No Records Found {{ usersData.length }} </center>-->
+                        <!--</tfoot>-->
+
+                        <!--<th ng-if="search && filtered_result.length==0" colspan="3">-->
+                            <!--<center>No Results Found " {{ search }}"</center>-->
+                        <!--</th>-->
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade sideModal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <form ng-submit="doAddUser(user,UserForm.$valid)" name="UserForm">
+        <div class="modal-content layout-column">
+            <div class="modal-header layout-row layout-align-center-center">
+              <h3 class="modal-title flex" id="myModalLabel"> {{ (user.id)?'Update':'Add' }} User</h3>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body flex">
+
+                <flash-message></flash-message>
+
+                <div class="form-group">
+                    <label>First Name <span style="color:red"> *</span></label>
+                    <input type="text" ng-model="user.first_name" class="form-control input-lg" required />
+                </div>
+
+                <div class="form-group">
+                    <label>Last Name <span style="color:red"> *</span></label>
+                    <input type="text" ng-model="user.last_name" class="form-control input-lg" required />
+                </div>
+                <div class="form-group">
+                    <label>Email <span style="color:red"> *</span></label>
+                    <input type="email" ng-model="user.email" class="form-control input-lg" required />
+                </div>
+
+                <div class="form-group">
+                    <label>Password <span ng-show="(user.id)?false:true" style="color:red"> *</span></label>
+                    <input type="password" ng-model="user.password" class="form-control input-lg" ng-required="(user.id)?false:true"/>
+                </div>
+
+                <div class="form-group">
+                    <label>Contact Number</label>
+                    <input type="text" ng-model="user.contact_number" class="form-control input-lg" />
+                </div>
+
+            </div>
+            <div class="modal-footer">
+              <input type="submit" class="btn btn-primary btn-lg" value="Submit">
+              <button type="button" class="btn btn-primary-outline btn-lg" data-dismiss="modal">Cancle</button>
+            </div>
+        </div>
+    </form>
+  </div>
+</div>

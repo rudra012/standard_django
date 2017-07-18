@@ -17,6 +17,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.views.generic import TemplateView
 from rest_framework_swagger.views import get_swagger_view
 
 from api.v0_x.routers import api_router as api_router_0x
@@ -33,6 +34,9 @@ urlpatterns += [
 
     url(r'react001/', include('react001.urls')),
     # url(r'react001-ajax/', include('react001.urls_ajax')),
+
+    # Angular1 First Web
+    url(r'angular1-web001/', TemplateView.as_view(template_name='angular1001/index.html'), name="angular1001_home"),
 
     # Rest API
     url(r'^v0.1-dev/', include(api_router_0x.urls)),
